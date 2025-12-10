@@ -224,6 +224,11 @@ public class LoanService {
             throw new RuntimeException("La fecha de devolución no puede ser anterior a la fecha de entrega");
         }
 
+        // Valida que la multa sea un número válido
+        if (loan.getDailyFineRate() == null || loan.getDailyFineRate().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new RuntimeException("Debe ingresar una multa diaria válida y mayor a 0");
+        }
+
         // Actualiza stock y estado de la herramienta
         toolService.changeToolState(tool.getId(), "Prestada");
         tool.setStock(tool.getStock() - 1);
